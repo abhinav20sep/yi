@@ -20,7 +20,6 @@ module Yi.Keymap.Vim.EventUtils
 import           Data.Char            (isDigit, toUpper)
 import           Data.List            (foldl')
 import qualified Data.Map             as M (Map, fromList, lookup)
-import           Data.Monoid          ((<>))
 import qualified Data.Text            as T (break, cons, null, pack, singleton, snoc, span, unpack)
 import           Data.Tuple           (swap)
 import           Yi.Event

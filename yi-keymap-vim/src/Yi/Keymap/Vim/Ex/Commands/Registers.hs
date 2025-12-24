@@ -10,7 +10,6 @@ module Yi.Keymap.Vim.Ex.Commands.Registers (printRegisters, parse) where
 
 import           Control.Applicative              (Alternative ((<|>)))
 import           Control.Monad                    (void)
-import           Data.Monoid                      ((<>))
 import           Yi.Keymap                        (Action (EditorA))
 import           Yi.Keymap.Vim.Ex.Types           (ExCommand (cmdAction, cmdShow))
 import           Yi.Keymap.Vim.Common             (EventString, RegisterName, Register (regContent), VimState (vsRegisterMap))

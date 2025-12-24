@@ -81,8 +81,8 @@ instance Binary SearchExp where
                       Left err -> error err
                       Right se -> se
   put (SearchExp { seInput   = re,
-                   seOptions = opts, .. }) = do put re
-                                                put opts
+                   seOptions = opts }) = do put re
+                                            put opts
 
 -- | Return an escaped (for parseRegex use) version of the string.
 regexEscapeString :: String -> String
@@ -141,4 +141,6 @@ emptySearch = SearchExp "" emptyRegex emptyRegex []
 
 -- | The regular expression that matches nothing.
 emptyRegex :: Regex
-Just emptyRegex = makeRegexOptsM defaultCompOpt defaultExecOpt "[[:empty:]]"
+emptyRegex = case makeRegexOptsM defaultCompOpt defaultExecOpt "[[:empty:]]" of
+    Just r -> r
+    Nothing -> error "emptyRegex: failed to compile empty regex"

@@ -62,7 +62,6 @@ import qualified Data.Map                 as M (Map, assocs, delete, empty,
                                                 insert, keys, lookup, map,
                                                 mapKeys, union, (!))
 import           Data.Maybe               (fromMaybe)
-import           Data.Monoid              ((<>))
 import qualified Data.Text                as T (Text, pack, unpack)
 import           Data.Time.Clock.POSIX    (posixSecondsToUTCTime)
 import           Data.Typeable            (Typeable)
@@ -269,9 +268,11 @@ editFile filename = do
           hmode = case P.parseOnly pc (R.toText header) of
                     Left _ -> ""
                     Right str -> str
-          Just mode = find (\(AnyMode m) -> modeName m == hmode) tbl <|>
+          mode = case find (\(AnyMode m) -> modeName m == hmode) tbl <|>
                       find (\(AnyMode m) -> modeApplies m f header) tbl <|>
-                      Just (AnyMode emptyMode)
+                      Just (AnyMode emptyMode) of
+                   Just m -> m
+                   Nothing -> AnyMode emptyMode  -- should never happen due to fallback above
       case mode of
           AnyMode newMode -> withGivenBuffer b $ setMode newMode
 

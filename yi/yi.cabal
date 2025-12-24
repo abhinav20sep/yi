@@ -42,7 +42,7 @@ executable yi
   main-is: Main.hs
   hs-source-dirs:
       ./
-  ghc-options: -Wall -ferror-spans -threaded -eventlog -rtsopts
+  ghc-options: -Wall -Werror -ferror-spans -threaded -rtsopts
   build-depends:
       base >= 4.8 && < 5
     , microlens-platform >= 0.3.4.0

@@ -24,7 +24,6 @@ where
 import           Data.Function       (on)
 import           Data.List           (find, nub)
 import           Data.Maybe          (catMaybes)
-import           Data.Monoid         ((<>))
 import           Data.Text           (Text)
 import qualified Data.Text           as T (Text, breakOn, isPrefixOf, length, null, tails, toCaseFold, splitAt)
 import           Yi.Editor           (EditorM, printMsg, printMsgs)

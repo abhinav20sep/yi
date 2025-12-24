@@ -17,7 +17,7 @@ module Yi.Syntax.Strokes.Haskell (getStrokes, tokenToAnnot) where
 import           Prelude           hiding (any, error, exp)
 
 import           Data.Foldable     (any)
-import           Data.Monoid       (Endo (..), (<>))
+import           Data.Monoid       (Endo (..))
 import           Yi.Debug          (error, trace)
 import           Yi.Lexer.Alex     (Posn (posnOfs), Stroke, Tok (tokPosn, tokT), tokToSpan)
 import           Yi.Lexer.Haskell

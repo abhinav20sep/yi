@@ -56,7 +56,6 @@ import           Control.Monad       (filterM, replicateM_, void)
 import           Control.Monad.Base  ()
 import           Data.List           ((\\))
 import           Data.Maybe          (fromMaybe)
-import           Data.Monoid         ((<>))
 import qualified Data.Text           as T (Text, concat, null, pack, singleton, snoc, unpack, unwords)
 import           System.FilePath     (takeDirectory, takeFileName, (</>))
 import           System.FriendlyPath ()
@@ -197,7 +196,9 @@ queryReplaceE = withMinibufferFree "Replace:" $ \replaceWhat ->
                  , oneOf [char 'q', ctrl (char 'g')] >>! qrFinish
                  ]
         -- TODO: Yi.Regex to Text
-        Right re = makeSearchOptsM [] (T.unpack replaceWhat)
+        re = case makeSearchOptsM [] (T.unpack replaceWhat) of
+            Right r -> r
+            Left err -> error $ "queryReplaceE: invalid regex: " ++ err
         question = T.unwords [ "Replacing", replaceWhat
                              , "with", replaceWith, " (y,n,q,!):"
                              ]

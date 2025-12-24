@@ -36,9 +36,8 @@ import           Lens.Micro.Platform                ((&), (.~), (^.))
 import           Control.Monad             (unless, void, when)
 import           Data.Binary               (Binary)
 import           Data.Default              (Default)
-import           Data.Foldable             (all, concatMap, elem, forM_, notElem)
+import           Data.Foldable             (all, concatMap, elem, notElem)
 import           Data.Maybe                (isJust, listToMaybe)
-import           Data.Monoid               ((<>))
 import qualified Data.Text                 as T (any, concat, drop, pack, unpack, unwords)
 import           Data.Typeable             (Typeable)
 import           Text.Read                 (readMaybe)
@@ -304,7 +303,9 @@ isLineComment = (Just Haskell.Line ==) . tokTyp . tokT
 
 contiguous :: Tok t -> Tok t -> Bool
 contiguous a b = lb - la <= 1
-    where [la,lb] = fmap (posnLine . tokPosn) [a,b]
+    where (la, lb) = case fmap (posnLine . tokPosn) [a,b] of
+            [x,y] -> (x, y)
+            _ -> error "contiguous: expected exactly two elements"
 
 coalesce :: Tok Token -> Tok Token -> Bool
 coalesce a b = isLineComment a && isLineComment b && contiguous a b

@@ -4,7 +4,6 @@ import Control.Monad.State.Lazy (execStateT)
 import Data.List                (intersperse)
 import Lens.Micro.Platform      ((.=))
 import Data.Maybe               (fromMaybe)
-import Data.Monoid              ((<>))
 import Data.Version (showVersion)
 import Paths_yi_core (version)
 
@@ -12,7 +11,6 @@ import Options.Applicative
 
 import Yi hiding (option)
 import Yi.Config.Simple.Types
-import Yi.Buffer.Misc (lineMoveRel)
 
 import Yi.Config.Default.HaskellMode    (configureHaskellMode)
 import Yi.Config.Default.JavaScriptMode (configureJavaScriptMode)

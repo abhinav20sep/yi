@@ -6,7 +6,6 @@ module Yi.Config.Default (defaultConfig) where
 
 import           Lens.Micro.Platform ((.~))
 import qualified Data.HashMap.Strict as HM
-import           Data.Monoid
 import           Paths_yi_core
 import           System.FilePath
 

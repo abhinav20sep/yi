@@ -11,7 +11,6 @@ module Yi.Keymap.Vim.Ex.Commands.BufferNew (parse) where
 import           Control.Applicative              (Alternative(..))
 import           Control.Monad                    (void)
 import qualified Data.Attoparsec.Text as P        (anyChar, char, string)
-import           Data.List                        (null)
 import qualified Data.Text as T                   (pack)
 import           Yi.Buffer                        (BufferId (MemBuffer))
 import           Yi.Editor                        (newEmptyBufferE, newTempBufferE, switchToBufferE)

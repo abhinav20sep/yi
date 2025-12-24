@@ -38,7 +38,7 @@ import           Data.Foldable       (concatMap, toList)
 import           Data.List.NonEmpty  (NonEmpty (..))
 import qualified Data.List.NonEmpty  as NE (reverse, toList, (<|))
 import           Data.Maybe          (catMaybes, listToMaybe)
-import           Data.Monoid         (First (First, getFirst), Last (Last, getLast), (<>))
+import           Data.Monoid         (First (First, getFirst), Last (Last, getLast))
 import           Yi.Buffer.Basic     (Point)
 import           Yi.Debug            (error, trace)
 import           Yi.Lexer.Alex       (posnLine, posnOfs,
@@ -84,7 +84,10 @@ pruneNodesBefore :: IsTree tree => Point -> Path -> tree (Tok a) -> tree (Tok a)
 pruneNodesBefore _ [] t = t
 pruneNodesBefore p (x:xs) t = rebuild $ left' <> (pruneNodesBefore p xs c : rs)
     where (children,rebuild) = uniplate t
-          (left,c:rs) = splitAt x children
+          (left, rest) = splitAt x children
+          (c, rs) = case rest of
+              (h:tl) -> (h, tl)
+              [] -> error "pruneNodesBefore: unexpected empty list after splitAt"
           left' = fmap replaceEmpty left
           replaceEmpty s = if getLastOffset s < p then emptyNode else s
 
@@ -282,9 +285,11 @@ subtreeRegion t = mkRegion (getFirstOffset t) (getLastOffset t)
 -- | Given a tree, return (first offset, number of lines).
 getSubtreeSpan :: (Foldable tree) => tree (Tok t) -> (Point, Int)
 getSubtreeSpan tree = (posnOfs firstOff, lastLine - firstLine)
-    where bounds@[firstOff, _last] = fmap (tokPosn . assertJust)
-                                     [getFirstElement tree, getLastElement tree]
-          [firstLine, lastLine] = fmap posnLine bounds
+    where bounds = fmap (tokPosn . assertJust) [getFirstElement tree, getLastElement tree]
+          (firstOff, lastOff) = case bounds of
+              [f, l] -> (f, l)
+              _ -> error "getSubtreeSpan: expected exactly two elements"
+          (firstLine, lastLine) = (posnLine firstOff, posnLine lastOff)
           assertJust (Just x) = x
           assertJust _ = error "assertJust: Just expected"
 

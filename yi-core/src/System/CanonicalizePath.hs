@@ -24,7 +24,6 @@ import qualified System.Win32             as Win32
 import           Control.Exc              (ignoringException)
 import           Control.Monad            (foldM)
 import           Data.List.Split          (splitOneOf)
-import           Data.Monoid              ((<>))
 import qualified Data.Text                as T (Text, empty, splitOn)
 import           System.Directory         (getCurrentDirectory)
 import           System.FilePath          (isAbsolute, isDrive, pathSeparator,

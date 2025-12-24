@@ -197,9 +197,9 @@ module Yi.Buffer.Misc
 
 import           Prelude                        hiding (foldr, mapM, notElem)
 
-import           Control.Applicative (liftA2)
+
 import           Control.Monad (when, void, replicateM_, join)
-import           Data.Monoid
+import           Data.Monoid (Endo(..))
 import           Control.Monad.Reader
 import           Control.Monad.State.Strict     hiding (get, put)
 import           Data.Binary                    (Binary (..), Get)

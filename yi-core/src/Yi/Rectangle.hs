@@ -14,13 +14,12 @@
 module Yi.Rectangle where
 
 import           Control.Monad       (forM_)
-import           Data.List           (sort, transpose)
-import           Data.Monoid         ((<>))
-import qualified Data.Text           as T (Text, concat, justifyLeft, length)
+import           Data.List           (sort)
+import           Data.Text           ()
 import           Yi.Buffer
 import           Yi.Editor           (EditorM, getRegE, setRegE, withCurrentBuffer)
 import qualified Yi.Rope             as R
-import           Yi.String           (lines', mapLines, unlines')
+import           Yi.String           (mapLines)
 
 -- | Get the selected region as a rectangle.
 -- Returns the region extended to lines, plus the start and end columns of the rectangle.
@@ -52,7 +51,9 @@ openRectangle = onRectangle openLine
 stringRectangle :: R.YiString -> BufferM ()
 stringRectangle inserted = onRectangle stringLine
   where stringLine l r line = left <> inserted <> right
-          where [left,_,right] = multiSplit [l,r] line
+          where (left, right) = case multiSplit [l,r] line of
+                  [lft,_,rgt] -> (lft, rgt)
+                  _ -> error "stringRectangle: multiSplit returned unexpected result"
 
 killRectangle :: EditorM ()
 killRectangle = do
@@ -62,8 +63,9 @@ killRectangle = do
       let (cutted, rest) = unzip $ fmap cut $ R.lines' text
 
           cut :: R.YiString -> (R.YiString, R.YiString)
-          cut line = let [left,mid,right] = multiSplit [l,r] line
-                     in (mid, left <> right)
+          cut line = case multiSplit [l,r] line of
+                       [left,mid,right] -> (mid, left <> right)
+                       _ -> error "killRectangle: multiSplit returned unexpected result"
       replaceRegionB reg (R.unlines rest)
       return cutted
   setRegE (R.unlines cutted)

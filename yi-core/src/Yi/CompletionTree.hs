@@ -39,7 +39,6 @@ import qualified Data.ListLike       as LL
 import           Data.ListLike       (ListLike)
 import           Lens.Micro.Platform (over, Lens', _2, (.~), (&))
 import           Data.Binary         (Binary)
-import           Data.Semigroup      (Semigroup)
 
 -- | A CompletionTree is a map of partial completions.
 --

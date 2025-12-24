@@ -104,7 +104,9 @@ readCTags =
               -- remove ctag control lines
               if "!_TAG_" `T.isPrefixOf` tag then Nothing
               else Just (Tag tag, [(T.unpack tagfile, getLineNumber lineno)])
-              where getLineNumber = (\(Right x) -> x) . fmap fst . R.decimal
+              where getLineNumber txt = case fmap fst (R.decimal txt) of
+                      Right x -> x
+                      Left _ -> 0  -- fallback for unparseable line numbers
           parseTagLine _ = Nothing
 
 -- | Read in a tag file from the system

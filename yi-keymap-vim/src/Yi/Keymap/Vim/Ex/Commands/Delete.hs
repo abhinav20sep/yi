@@ -15,7 +15,6 @@ import           Control.Monad                    (void)
 import qualified Data.Attoparsec.Text             as P (string, try, match)
 import           Data.Maybe                       (fromMaybe)
 import           Data.Text                        ()
-import           Data.Semigroup                   ((<>))
 import           Lens.Micro.Platform
 import           Yi.Buffer                        hiding (Delete)
 import           Yi.Keymap                        (Action (BufferA))

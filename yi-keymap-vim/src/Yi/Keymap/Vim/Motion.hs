@@ -55,7 +55,6 @@ import           Control.Applicative        (Alternative ((<|>)))
 import           Lens.Micro.Platform        (_3, over, use)
 import           Control.Monad              (replicateM_, void, when, (<=<))
 import           Data.Maybe                 (fromMaybe)
-import           Data.Monoid                ((<>))
 import qualified Data.Text                  as T (unpack)
 import           Yi.Buffer
 import           Yi.Keymap.Vim.Common       (EventString (_unEv), MatchResult (..), lookupBestMatch)

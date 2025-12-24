@@ -13,7 +13,6 @@ module Yi.Keymap.Vim.Ex.Commands.Global (parse) where
 import           Control.Applicative                  (Alternative ((<|>)))
 import           Lens.Micro.Platform                           (use)
 import           Control.Monad                        (forM_, void, when)
-import           Data.Monoid                          ((<>))
 import qualified Data.Text                            as T (Text, isInfixOf, pack, snoc)
 import qualified Data.Attoparsec.Text                 as P (anyChar, char, many', satisfy, string, try)
 import           Yi.Buffer

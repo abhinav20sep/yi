@@ -20,7 +20,7 @@ module Yi.Keymap.Cua ( keymap
 
 import           Control.Applicative      (Alternative ((<|>)))
 import           Lens.Micro.Platform      ((.=), use)
-import           Control.Monad            (unless, when)
+import           Control.Monad            (unless)
 import qualified Data.Text                as T (drop, take)
 import           Yi.Buffer
 import           Yi.Editor
@@ -31,7 +31,7 @@ import           Yi.Keymap.Keys
 import           Yi.MiniBuffer            (commentRegion)
 import           Yi.Misc                  (selectAll)
 import           Yi.Rectangle             (getRectangle, killRectangle, yankRectangle)
-import qualified Yi.Rope                  as R (YiString, length, singleton, withText)
+import qualified Yi.Rope                  as R (YiString, singleton, withText)
 import           Yi.String                (lines', unlines')
 import           Yi.Keymap.Emacs.KillRing (clipboardToKillring, killringToClipboard)
 

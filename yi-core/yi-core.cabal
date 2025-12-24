@@ -21,7 +21,7 @@ flag hint
 library
   hs-source-dirs:
       src
-  ghc-options: -Wall -ferror-spans -Wall -fno-warn-orphans -ferror-spans
+  ghc-options: -Wall -Werror -ferror-spans -Wall -fno-warn-orphans -ferror-spans
   build-depends:
       base >= 4.8 && < 5
     , array
@@ -143,7 +143,7 @@ test-suite tasty
   main-is: Spec.hs
   hs-source-dirs:
       test
-  ghc-options: -Wall -ferror-spans
+  ghc-options: -Wall -Werror -ferror-spans
   build-depends:
       base >= 4.8 && < 5
     , yi-rope >= 0.10
@@ -167,7 +167,7 @@ benchmark all
   main-is: Bench.hs
   hs-source-dirs:
       bench
-  ghc-options: -Wall -ferror-spans -Wall -ferror-spans -rtsopts
+  ghc-options: -Wall -Werror -ferror-spans -Wall -ferror-spans -rtsopts
   build-depends:
       base >= 4.8 && < 5
     , yi-core

@@ -23,7 +23,7 @@ import qualified Prelude
 import           Control.Applicative (Alternative ((<|>), many), optional)
 import           Data.Data           (Data)
 import           Data.Foldable       (any, elem, toList)
-import           Data.Monoid         (Endo (..), (<>))
+import           Data.Monoid         (Endo (..))
 import qualified Data.Text           as T (cons)
 import           Data.Typeable       (Typeable)
 import           Yi.Buffer.Basic     (Point (..))

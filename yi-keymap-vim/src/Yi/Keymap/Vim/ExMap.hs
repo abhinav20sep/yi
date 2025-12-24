@@ -15,7 +15,6 @@ module Yi.Keymap.Vim.ExMap (defExMap) where
 import           Control.Monad            (when)
 import           Data.Char                (isSpace)
 import           Data.Maybe               (fromJust)
-import           Data.Monoid              ((<>))
 import qualified Data.Text                as T (Text, drop, head, length, split, unwords, map, unpack)
 import           System.FilePath          (isPathSeparator)
 import           Yi.Buffer                hiding (Insert)

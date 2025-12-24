@@ -64,7 +64,6 @@ import           Data.Binary         (Binary, get, put)
 import           Data.Char           (isAlpha, isUpper)
 import           Data.Default        (Default, def)
 import           Data.Maybe          (listToMaybe)
-import           Data.Monoid         ((<>))
 import qualified Data.Text           as T (Text, any, break, empty, length, null, takeWhile, unpack)
 import qualified Data.Text.Encoding  as E (decodeUtf8, encodeUtf8)
 import           Data.Typeable       (Typeable)
@@ -112,7 +111,9 @@ doSearch Nothing   _  d = do
 -- | Set up a search.
 searchInit :: String -> Direction -> [SearchOption] -> EditorM (SearchExp, Direction)
 searchInit re d fs = do
-    let Right c_re = makeSearchOptsM fs re
+    c_re <- case makeSearchOptsM fs re of
+        Right r -> return r
+        Left err -> error $ "searchInit: invalid regex: " ++ err
     setRegexE c_re
     searchDirectionA .= d
     return (c_re,d)
@@ -239,8 +240,9 @@ isearchAddE inc = isearchFunE (<> inc)
 
 -- | Create a SearchExp that matches exactly its argument
 makeSimpleSearch :: R.YiString -> SearchExp
-makeSimpleSearch s = se
-    where Right se = makeSearchOptsM [QuoteRegex] (R.toString s)
+makeSimpleSearch s = case makeSearchOptsM [QuoteRegex] (R.toString s) of
+    Right se -> se
+    Left err -> error $ "makeSimpleSearch: " ++ err
 
 makeISearch :: T.Text -> SearchExp
 makeISearch s = case makeSearchOptsM opts (T.unpack s) of

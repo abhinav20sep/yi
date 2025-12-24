@@ -28,10 +28,8 @@ import           Data.Char                  (isSpace, toLower, toUpper)
 import           Data.Foldable              (find)
 import qualified Data.List.NonEmpty as NE
 import           Data.Maybe                 (fromJust)
-import           Data.Monoid                ((<>))
 import qualified Data.Text                  as T (unpack)
 import           Yi.Buffer                  hiding (Insert)
-import           Yi.Buffer.Misc             (startUpdateTransactionB)
 import           Yi.Editor                  (EditorM, getEditorDyn, withCurrentBuffer)
 import           Yi.Keymap.Vim.Common
 import           Yi.Keymap.Vim.EventUtils   (eventToEventString, parseEvents)
@@ -123,7 +121,7 @@ opChange = VimOperator {
                         points <- deleteRegionWithStyleB reg style
                         moveTo $ NE.head points
                         return points
-                    modifyStateE $ \s -> s { vsSecondaryCursors = NE.tail points }
+                    modifyStateE $ \st -> st { vsSecondaryCursors = NE.tail points }
                 _ -> withCurrentBuffer $ do
                     point <- NE.head <$> deleteRegionWithStyleB reg style
                     moveTo point

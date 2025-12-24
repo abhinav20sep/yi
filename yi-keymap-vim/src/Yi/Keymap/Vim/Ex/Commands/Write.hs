@@ -13,7 +13,6 @@ module Yi.Keymap.Vim.Ex.Commands.Write (parse) where
 import           Control.Applicative              (Alternative ((<|>)))
 import           Control.Monad                    (void, when)
 import qualified Data.Attoparsec.Text             as P (anyChar, many', many1, space, string, try)
-import           Data.Monoid                      ((<>))
 import qualified Data.Text                        as T (Text, pack)
 import           Yi.Buffer                        (BufferRef)
 import           Yi.Editor                        (printMsg)

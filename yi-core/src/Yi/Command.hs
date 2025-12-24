@@ -15,7 +15,7 @@
 
 module Yi.Command where
 
-import           Control.Concurrent  (MVar,newEmptyMVar,putMVar,takeMVar)
+import           Control.Concurrent  (newEmptyMVar, putMVar, takeMVar)
 import           Control.Exception   (SomeException)
 import           Lens.Micro.Platform ((.=))
 import           Control.Monad       (void)

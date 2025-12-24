@@ -13,7 +13,6 @@
 module Yi.Keymap.Vim.Ex.Commands.Number (parse) where
 
 import qualified Data.Attoparsec.Text             as P (string)
-import           Data.Monoid                      ((<>))
 import           Yi.Editor                        (printMsg, withCurrentBuffer)
 import           Yi.Keymap                        (Action (BufferA, EditorA))
 import           Yi.Keymap.Vim.Common             (EventString)

@@ -27,7 +27,9 @@ data Tree a = Bin (Tree a) (Tree a)
 
 instance IsTree Tree where
     emptyNode = Tip
-    uniplate (Bin l r) = ([l,r],\[l',r'] -> Bin l' r')
+    uniplate (Bin l r) = ([l,r], rebuildBin)
+      where rebuildBin [l',r'] = Bin l' r'
+            rebuildBin _ = error "uniplate: Bin expects exactly two children"
     uniplate t = ([],const t)
 
 manyToks :: P (Tok t) (Tree (Tok t))

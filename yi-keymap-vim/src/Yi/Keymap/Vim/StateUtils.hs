@@ -38,7 +38,6 @@ module Yi.Keymap.Vim.StateUtils
 import           Control.Monad            (when)
 import qualified Data.HashMap.Strict      as HM (insert, lookup)
 import           Data.Maybe               (fromMaybe, isJust)
-import           Data.Monoid              ((<>))
 import qualified Data.Text                as T (null)
 import           Yi.Buffer.Normal         (RegionStyle (Block, LineWise))
 import           Yi.Editor                (EditorM, getEditorDyn, putEditorDyn, setStatus)

@@ -21,7 +21,6 @@ import           Data.Foldable                  (find, toList)
 import qualified Data.List.PointedList.Circular as PL (PointedList, focus)
 import qualified Data.Map.Strict                as M (Map, fromList)
 import           Data.Maybe                     (fromMaybe)
-import           Data.Monoid                    ((<>))
 import qualified Data.Text                      as T (uncons)
 import           Data.Traversable               (mapM)
 import           Yi.Buffer
@@ -110,7 +109,9 @@ layoutWindow win e w h = win
 
         -- Work around a problem with the mini window never displaying it's contents due to a
         -- fromMark that is always equal to the end of the buffer contents.
-        Just (MarkSet fromM _ _) = evalBuffer (getMarks win)
+        (MarkSet fromM _ _) = case evalBuffer (getMarks win) of
+            Just ms -> ms
+            Nothing -> error "SimpleLayout: getMarks returned Nothing"
         fromMarkPoint = if isMini win
                         then Point 0
                         else evalBuffer $ use $ markPointA fromM

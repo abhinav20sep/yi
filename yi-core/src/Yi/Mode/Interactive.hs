@@ -14,7 +14,6 @@ module Yi.Mode.Interactive where
 
 import           Control.Concurrent   (threadDelay)
 import           Lens.Micro.Platform           (use, (%~), (.=))
-import           Data.Monoid          ((<>))
 import qualified Data.Text            as T (Text)
 import           Yi.Buffer
 import           Yi.Core              (sendToProcess, startSubprocess, withSyntax)

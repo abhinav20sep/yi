@@ -99,8 +99,9 @@ layoutHandler isSpecial parens isIgnored (openT, closeT, nextT) isGroupOpen lexS
 
             -- pop an indent block
             | col < deepestIndent levels
-              = let (_lev:levs) = dropWhile isParen levels
-                in (st', tt closeT) : parse (IState levs doOpen lastLine) toks
+              = case dropWhile isParen levels of
+                  (_lev:levs) -> (st', tt closeT) : parse (IState levs doOpen lastLine) toks
+                  [] -> error "Layout.parse: unexpected empty levels after dropWhile"
                   -- drop all paren levels inside the indent
 
             -- next item

@@ -119,15 +119,15 @@ instance Functor (I event w) where
   fmap f i = pure f <*> i
 
 instance Applicative (I ev w) where
-    pure = return
-    a <*> b = do f <- a; x <- b; return (f x)
+    pure = Returns
+    a <*> b = do f <- a; x <- b; pure (f x)
 
 instance Alternative (I ev w) where
     empty = Fails
     (<|>) = Plus
 
 instance Monad (I event w) where
-  return  = Returns
+  return  = pure
   (>>=)   = Binds
 #if (!MIN_VERSION_base(4,13,0))
   fail _ = Fails
@@ -231,23 +231,20 @@ pushEvent (Chain p q) e = Chain (pushEvent p e) q
 -- | Abstraction of the automaton state.
 data InteractState event w =  Ambiguous [(Int,w,P event w)] | Waiting | Dead | Running w (P event w)
 
-#if __GLASGOW_HASKELL__ >= 804 
 instance Semigroup (InteractState event w) where
-  (<>) = mappend
-#endif
+    -- not used at the moment:
+    Running w c <> _ = Running w c
+    _ <> Running w c = Running w c
+    -- don't die if that can be avoided
+    Dead <> p = p
+    p <> Dead = p
+    -- If a branch is not determined, wait for it.
+    Waiting <> _ = Waiting
+    _ <> Waiting = Waiting
+    -- ambiguity remains
+    Ambiguous a <> Ambiguous b = Ambiguous (a ++ b)
 
 instance Monoid (InteractState event w) where
-    -- not used at the moment:
-    mappend (Running w c) _ = Running w c
-    mappend _ (Running w c) = Running w c
-    -- don't die if that can be avoided
-    mappend Dead p = p
-    mappend p Dead = p
-    -- If a branch is not determined, wait for it.
-    mappend Waiting _ = Waiting
-    mappend _ Waiting = Waiting
-    -- ambiguity remains
-    mappend (Ambiguous a) (Ambiguous b) = Ambiguous (a ++ b)
     mempty = Ambiguous []
 
 

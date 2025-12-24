@@ -38,7 +38,6 @@ import qualified Data.Attoparsec.Text          as P (Parser, anyChar, char,
                                                      many1, notInClass, parseOnly,
                                                      option, satisfy, space, string)
 import           Data.List.NonEmpty            (NonEmpty (..))
-import           Data.Monoid                   ((<>))
 import qualified Data.Text                     as T (Text, concat, cons, drop,
                                                      isPrefixOf, length, pack,
                                                      singleton, snoc)

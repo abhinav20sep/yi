@@ -24,7 +24,6 @@ module Yi.Keymap.Vim
 
 import Data.Char                              (toUpper)
 import Data.List                              (find)
-import Data.Monoid                            ((<>))
 import Data.Prototype                         (Proto (Proto), extractValue)
 import Yi.Buffer                              (commitUpdateTransactionB, startUpdateTransactionB)
 import Yi.Editor

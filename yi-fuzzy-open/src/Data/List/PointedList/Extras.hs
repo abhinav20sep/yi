@@ -23,8 +23,8 @@ catMaybesr (PointedList mls mf mrs) = case mf of
   ss = M.catMaybes mrs
 
   shiftFocus :: [a] -> [a] -> Maybe (PointedList a)
-  shiftFocus []     (f:rs) = pure $ PointedList [] f rs
-  shiftFocus (f:ls) []     = pure $ PointedList ls f []
-  shiftFocus _      _      = Nothing
+  shiftFocus []     (f:rs') = pure $ PointedList [] f rs'
+  shiftFocus (f:ls) []      = pure $ PointedList ls f []
+  shiftFocus _      _       = Nothing
 
 

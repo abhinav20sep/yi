@@ -4,6 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators       #-}
 {-# LANGUAGE DeriveFunctor       #-}
+{-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 
 -- TODO:
 -- better interface
@@ -228,9 +229,18 @@ feed :: Maybe [s] -> Steps s r -> Steps s r
 feed (Just []) p = p  -- nothing more left to feed
 feed ss p = case p of
                   (Sus nil cons) -> case ss of
-                      Just [] -> p -- no more info, stop feeding
                       Nothing -> feed Nothing nil -- finish
                       Just (s:_) -> feed ss (cons s)
+                      Just [] -> p -- unreachable due to first equation, but needed for exhaustiveness
+                  (Shift p') -> Shift (feed ss p')
+                  (Sh' p')   -> Shift (feed (fmap (drop 1) ss) p')
+                  (Dislike p') -> Dislike (feed ss p')
+                  (Log err p') -> Log err (feed ss p')
+                  (Val x p') -> Val x (feed ss p')
+                  (App p') -> App (feed ss p')
+                  Done -> Done
+                  Fail -> Fail
+                  Best _ _ p' q' -> iBest (feed ss p') (feed ss q')
                   (Shift p') -> Shift (feed ss p')
                   (Sh' p')   -> Shift (feed (fmap (drop 1) ss) p')
                   (Dislike p') -> Dislike (feed ss p')

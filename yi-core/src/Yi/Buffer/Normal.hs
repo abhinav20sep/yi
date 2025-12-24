@@ -78,7 +78,9 @@ convertRegionToStyleB r = mkRegionOfStyleB (regionStart r) (regionEnd r)
 
 mkRegionOfStyleB :: Point -> Point -> RegionStyle -> BufferM Region
 mkRegionOfStyleB start' stop' regionStyle =
-   let [start, stop] = sort [start', stop']
+   let (start, stop) = case sort [start', stop'] of
+         [s1, s2] -> (s1, s2)
+         _ -> error "mkRegionOfStyleB: unexpected sort result"
        region = mkRegion start stop in
    case regionStyle of
      LineWise  -> inclusiveRegionB =<< unitWiseRegion Line region

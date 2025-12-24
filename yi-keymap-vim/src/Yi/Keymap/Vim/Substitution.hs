@@ -8,7 +8,6 @@ module Yi.Keymap.Vim.Substitution
     ) where
 
 import Control.Monad (void)
-import Data.Monoid
 import Yi.MiniBuffer
 import Yi.Keymap (Keymap)
 import qualified Yi.Rope as R

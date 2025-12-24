@@ -99,4 +99,4 @@ instance HookType (YiM a) where
         cfg <- askCfg
         lookupHook (cfg ^. configVariable)
 instance HookType b => HookType (a -> b) where
-    runHookImpl lookupHook a = runHookImpl (($a) . lookupHook)
+    runHookImpl lookupHook a = runHookImpl (($ a) . lookupHook)

@@ -30,7 +30,7 @@ import           Control.Concurrent             (MVar, forkIO, myThreadId, newEm
 import           Control.Concurrent.STM         (atomically, isEmptyTChan, readTChan)
 import           Control.Exception              (IOException, handle)
 import           Lens.Micro.Platform            (makeLenses, view, use, Lens')
-import           Control.Monad                  (void, when)
+import           Control.Monad                  (void)
 import           Data.Char                      (chr, ord)
 import           Data.Default                   (Default)
 import qualified Data.DList                     as D (empty, snoc, toList)
@@ -39,7 +39,7 @@ import           Data.IORef                     (IORef, newIORef, readIORef, wri
 import qualified Data.List.PointedList.Circular as PL (PointedList (_focus), withFocus)
 import qualified Data.Map.Strict                as M ((!))
 import           Data.Maybe                     (fromMaybe, maybeToList)
-import           Data.Monoid                    (Endo (appEndo), (<>))
+import           Data.Monoid                    (Endo (appEndo))
 import qualified Data.Text                      as T (Text, cons, empty,
                                                       justifyLeft, length, pack,
                                                       singleton, snoc, take,
@@ -89,7 +89,7 @@ import qualified Graphics.Vty.Input.Events      as VtyIE (InternalEvent(..), Eve
 import           System.Exit                    (ExitCode, exitWith)
 import           Yi.Buffer
 import           Yi.Config
-import           Yi.Debug                       (logError, logPutStrLn)
+import           Yi.Debug                       (error, logError, logPutStrLn)
 import           Yi.Editor
 import           Yi.Event                       (Event)
 import qualified Yi.Rope as R
@@ -331,7 +331,9 @@ renderWindow cfg' e (SL.Rect x y _ _) nb (win, focused) =
         region = mkSizeRegion fromMarkPoint . Size $! R.length text
         -- Work around a problem with the mini window never displaying it's contents due to a
         -- fromMark that is always equal to the end of the buffer contents.
-        (Just (MarkSet fromM _ _), _) = runBuffer win b (getMarks win)
+        (MarkSet fromM _ _) = case runBuffer win b (getMarks win) of
+            (Just ms, _) -> ms
+            (Nothing, _) -> error "renderWin: getMarks returned Nothing"
         fromMarkPoint = if notMini
                         then fst $ runBuffer win b $ use $ markPointA fromM
                         else Point 0

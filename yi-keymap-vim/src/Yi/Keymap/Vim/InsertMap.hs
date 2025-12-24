@@ -16,7 +16,6 @@ import           Lens.Micro.Platform               (use)
 import           Control.Monad            (forM, liftM2, replicateM_, void, when)
 import           Data.Char                (isDigit)
 import           Data.List.NonEmpty       (NonEmpty (..), head, toList)
-import           Data.Monoid              ((<>))
 import qualified Data.Text                as T (pack, unpack)
 import qualified Yi.Buffer                as B (bdeleteB, deleteB, deleteRegionB, insertB, insertN)
 import           Yi.Buffer                as BA hiding (Insert)
@@ -114,9 +113,11 @@ oneshotNormalBinding = VimBindingE (f . T.unpack . _unEv)
     f _ _ = NoMatch
     action evs = do
         let (countString, motionCmd) = span isDigit evs
-            WholeMatch (Move _style _isJump move) = stringToMove . Ev . T.pack $ motionCmd
-        withCurrentBuffer $ move (if null countString then Nothing else Just (read countString))
-        return Continue
+        case stringToMove . Ev . T.pack $ motionCmd of
+            WholeMatch (Move _style _isJump move) -> do
+                withCurrentBuffer $ move (if null countString then Nothing else Just (read countString))
+                return Continue
+            _ -> return Continue  -- NoMatch or PartialMatch, ignore
 
 pasteRegisterBinding :: VimBinding
 pasteRegisterBinding = VimBindingE (f . T.unpack . _unEv)
@@ -241,7 +242,8 @@ cursorBinding = VimBindingE f
     f evs (VimState { vsMode = (Insert _) })
         | evs `elem` ["<Up>", "<Left>", "<Down>", "<Right>"]
         = WholeMatch $ do
-              let WholeMatch (Move _style _isJump move) = stringToMove evs
-              withCurrentBuffer $ move Nothing
+              case stringToMove evs of
+                  WholeMatch (Move _style _isJump move) -> withCurrentBuffer $ move Nothing
+                  _ -> return ()  -- should not happen for arrow keys
               return Continue
     f _ _ = NoMatch

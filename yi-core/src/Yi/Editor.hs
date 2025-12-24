@@ -125,8 +125,6 @@ import qualified Data.List.PointedList.Circular as PL (PointedList (..), delete,
 import qualified Data.Map                       as M (delete, elems, empty,
                                                       insert, lookup, singleton, (!))
 import           Data.Maybe                     (fromJust, fromMaybe, isNothing)
-import qualified Data.Monoid                    as Mon ((<>))
-import           Data.Semigroup                 ((<>))
 import qualified Data.Sequence                  as S
 import qualified Data.Text                      as T (Text, null, pack, unlines, unpack, unwords, isInfixOf)
 import           System.FilePath                (splitPath)
@@ -814,6 +812,8 @@ newTempBufferE = do
             else currentName
       find_next _ [] = error "Looks like nearly infinite list has just ended."
       next_tmp_name = find_next name names
-      (name : names) = (fmap (("tmp-" Mon.<>) . T.pack . show) [0 :: Int ..])
+      (name, names) = case fmap (("tmp-" <>) . T.pack . show) [0 :: Int ..] of
+        (n:ns) -> (n, ns)
+        [] -> error "newTempBufferE: infinite list is empty (impossible)"
 
   newEmptyBufferE (MemBuffer next_tmp_name)

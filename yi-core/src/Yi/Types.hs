@@ -31,7 +31,7 @@ import           Control.Monad.Base             (MonadBase, liftBase)
 import qualified Control.Monad.Fail as Fail
 import           Control.Monad.Reader
 import           Control.Monad.State.Strict
-import           Control.Monad (ap, liftM3, void, forever)
+import           Control.Monad (liftM3, void, forever)
 import qualified Data.Set                       as Set
 import           Data.Binary                    (Binary)
 import qualified Data.Binary                    as B (get, put)
@@ -168,7 +168,7 @@ extractTopKeymap kms = forever (topKeymap kms)
 
 -- | The BufferM monad writes the updates performed.
 newtype BufferM a = BufferM { fromBufferM :: ReaderT Window (State FBuffer) a }
-    deriving ( Monad, Functor, Typeable
+    deriving ( Monad, Applicative, Functor, Typeable
              , MonadState FBuffer
              , MonadReader Window )
 
@@ -183,10 +183,6 @@ data IndentSettings = IndentSettings
   , tabSize    :: !Int  -- ^ Size of a Tab
   , shiftWidth :: !Int  -- ^ Indent by so many columns
   } deriving (Eq, Show, Typeable)
-
-instance Applicative BufferM where
-    pure = return
-    (<*>) = ap
 
 data FBuffer = forall syntax.
         FBuffer { bmode  :: !(Mode syntax)

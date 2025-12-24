@@ -12,7 +12,6 @@ module Yi.Keymap.Vim.Ex.Commands.Sort (parse) where
 
 import           Control.Monad                    (void)
 import qualified Data.Attoparsec.Text             as P (match, string)
-import           Data.Monoid                      ((<>))
 import qualified Data.Text                        as T (Text)
 import           Yi.Buffer
 import           Yi.Keymap                        (Action (BufferA))

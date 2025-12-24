@@ -13,7 +13,6 @@ module Yi.Keymap.Vim.Ex.Commands.Stack (parse) where
 import           Control.Applicative              (Alternative ((<|>)))
 import           Data.Attoparsec.Text             as P (choice, Parser)
 import           Data.Text                        (Text)
-import           Data.Monoid                      ((<>))
 import           Yi.Command                       (stackCommandE)
 import           Yi.Keymap                        (Action (YiA))
 import           Yi.Keymap.Vim.Common             (EventString)

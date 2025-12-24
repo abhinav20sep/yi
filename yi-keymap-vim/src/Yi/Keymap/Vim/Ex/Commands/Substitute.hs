@@ -17,7 +17,6 @@ import qualified Data.Attoparsec.Text             as P (char, inClass, many', ma
                                                         satisfy, string, option,
                                                         (<?>), Parser)
 import           Data.Maybe                       (fromMaybe)
-import           Data.Monoid                      ((<>))
 import qualified Data.Text                        as T (Text, cons, snoc)
 import           Lens.Micro.Platform              (over, _2)
 import           Yi.Buffer

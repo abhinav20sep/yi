@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveFunctor  #-}
-{-# OPTIONS_GHC -fno-warn-incomplete-patterns #-} -- uniplate patterns
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns -Wno-incomplete-patterns #-} -- uniplate patterns
 {-# OPTIONS_HADDOCK show-extensions #-}
 
 -- |
@@ -15,7 +15,7 @@
 module Yi.Syntax.Latex where
 
 import           Control.Applicative (Alternative ((<|>), empty, many))
-import           Data.Monoid         (Endo (..), (<>))
+import           Data.Monoid         (Endo (..))
 import           Yi.IncrementalParse (P, eof, recoverWith, symbol)
 import           Yi.Lexer.Alex       hiding (tokenToStyle)
 import           Yi.Lexer.Latex      (Token (..), tokenToText)

@@ -13,7 +13,6 @@ module Yi.Keymap.Vim.Ex.Commands.Read (parse) where
 import           Control.Applicative              (Alternative ((<|>)))
 import           Control.Monad.Base               (liftBase)
 import qualified Data.Attoparsec.Text             as P (anyChar, many1, space, string, try)
-import           Data.Monoid                      ((<>))
 import qualified Data.Text                        as T (Text, pack)
 import qualified Data.Text.IO                     as T (readFile)
 import           System.Exit                      (ExitCode (..))

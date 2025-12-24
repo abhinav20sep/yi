@@ -65,7 +65,7 @@ import qualified Data.List.PointedList.Circular as PL (PointedList (_focus), len
 import           Data.List.Split                (splitOn)
 import qualified Data.Map                       as M (assocs, delete, empty, fromList, insert, member)
 import           Data.Maybe                     (fromMaybe, isNothing)
-import           Data.Monoid                    (First (First, getFirst), (<>), mempty)
+import           Data.Monoid                    (First (First, getFirst))
 import qualified Data.Text                      as T (Text, pack, unwords)
 import           Data.Time                      (getCurrentTime)
 import           Data.Time.Clock.POSIX          (posixSecondsToUTCTime)
@@ -341,7 +341,9 @@ suspendEditor = withUI UI.suspend
 --
 runProcessWithInput :: String -> String -> YiM String
 runProcessWithInput cmd inp = do
-    let (f:args) = splitOn " " cmd
+    (f, args) <- case splitOn " " cmd of
+        (x:xs) -> return (x, xs)
+        [] -> error "runProcessWithInput: empty command"
     (_,out,_err) <- liftBase $ readProcessWithExitCode f args inp
     return (chomp "\n" out)
 

@@ -31,10 +31,9 @@ module Yi.Buffer.Indent
     , tabB
     ) where
 
-import           Control.Monad       ()
 import           Data.Char           (isSpace)
 import           Data.List           (nub, sort)
-import           Data.Monoid         ((<>))
+
 import           Yi.Buffer.Basic     (Direction (..))
 import           Yi.Buffer.HighLevel (firstNonSpaceB, getNextLineB, getNextNonBlankLineB, moveToSol, readLnB)
 import           Yi.Buffer.Misc

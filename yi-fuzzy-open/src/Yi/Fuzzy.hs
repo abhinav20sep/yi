@@ -26,8 +26,6 @@ import Data.Foldable (Foldable(..))
 import Data.List (isSuffixOf)
 import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
 import Data.List.PointedList (PointedList(..))
-import Data.Maybe (fromMaybe)
-import Data.Monoid ((<>))
 import Data.Text (Text)
 import Data.Typeable (Typeable)
 import GHC.Generics (Generic)
@@ -200,9 +198,6 @@ renderE (FuzzyState maybeZipper s) =
     Nothing      -> printMsg "No match found"
     Just content -> setStatus (toList content, defaultStyle)
  where
-  tshow :: Show s => s -> Text
-  tshow = T.pack . show
-
   mcontent :: Maybe (NonEmpty Text)
   mcontent = do
     zipper  <- maybeZipper

@@ -1,5 +1,6 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-deprecations #-} -- Dyre API deprecations
 {-# OPTIONS_HADDOCK show-extensions #-}
 
 -- |

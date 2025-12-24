@@ -14,7 +14,6 @@ module Yi.Keymap.Vim.Ex.Eval
     ) where
 
 import           Control.Monad          (void)
-import           Data.Monoid            ((<>))
 import qualified Data.Text              as T (unpack)
 import           Yi.Editor              (EditorM, MonadEditor (withEditor), withCurrentBuffer)
 import           Yi.Keymap              (Action (BufferA, EditorA, YiA), YiM)

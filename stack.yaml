@@ -18,13 +18,17 @@ packages:
 - yi-language
 - yi-snippet
 - yi
-resolver: lts-21.12
+resolver: lts-22.43
 build:
  library-profiling: false
  executable-profiling: false
 
 extra-deps:
   - Hclip-3.0.0.4
+  # Required for yi-frontend-vty with vty >= 6
+  - vty-6.5@sha256:43a4137de7e55cf438a8334cc525fb0e0b4efe78d2ed8bd31b0716eb34993059,3425
+  - vty-crossplatform-0.5.0.0@sha256:6d057fd8a5582eac3be28c91e99ed3730b729078e107ad19107af46bbb2ea65d,3146
+  - vty-unix-0.2.0.0
 
 # needed for macOS
 # flags:

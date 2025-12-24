@@ -15,7 +15,6 @@ import           Control.Monad                    (void)
 import qualified Data.Attoparsec.Text             as P (Parser, anyChar, endOfInput,
                                                         many1, option,
                                                         space, string)
-import           Data.Monoid                      ((<>))
 import qualified Data.Text                        as T (pack)
 import           Yi.Keymap                        (Action (YiA))
 import           Yi.Keymap.Vim.Common             (EventString)

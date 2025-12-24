@@ -33,11 +33,10 @@ module Yi.File (
   preSaveHooks
  ) where
 
-import           Lens.Micro.Platform    ((.=), makeLenses, use, view, (^.))
+import           Lens.Micro.Platform    ((.=), makeLenses, view, (^.))
 import           Control.Monad          (filterM, void, when)
 import           Control.Monad.Base     (liftBase)
 import           Data.Default           (Default, def)
-import           Data.Monoid            ((<>))
 import qualified Data.Text              as T (Text, append, cons, pack, unpack)
 import           Data.Time              (getCurrentTime)
 import           Data.Typeable          (Typeable)
@@ -150,7 +149,7 @@ fwriteBufferE bufferKey = do
       False -> do
         hooks <- view preSaveHooks <$> askCfg
         mapM_ runAction hooks
-        mayErr <- liftBase $ R.writeFile f contents
+        _ <- liftBase $ R.writeFile f contents
         io getCurrentTime >>= withGivenBuffer bufferKey . markSavedB
         return True
     (Nothing, _) -> printMsg "Buffer not associated with a file" >> return False

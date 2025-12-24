@@ -4,9 +4,10 @@
 
 -- we have lots of parsers which don't want signatures; and we have
 -- uniplate patterns
-{-# OPTIONS_GHC -fno-warn-missing-signatures
-                -fno-warn-incomplete-patterns
-                -fno-warn-name-shadowing #-}
+{-# OPTIONS_GHC -Wno-missing-signatures
+                -Wno-incomplete-uni-patterns
+                -Wno-incomplete-patterns
+                -Wno-name-shadowing #-}
 {-# OPTIONS_HADDOCK show-extensions #-}
 
 -- |

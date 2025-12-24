@@ -27,7 +27,7 @@ import qualified Data.ByteString.Char8      as B (ByteString, pack, readFile, un
 import qualified Data.ByteString.Lazy.Char8 as BL (fromChunks)
 import           Data.Default               (Default, def)
 import           Data.Sequence              as S (Seq, ViewL (EmptyL, (:<)),
-                                                  ViewR ((:>)), empty, length,
+                                                  ViewR ((:>), EmptyR), empty, length,
                                                   null, splitAt, viewl, viewr,
                                                   (<|), (><), (|>))
 import           Data.Typeable              (Typeable)
@@ -78,7 +78,9 @@ shift :: Int -> ArticleDB -> ArticleDB
 shift n adb = if n < 2 || lst < 2 then adb else ADB $ (r S.|> lastentry) >< s'
   where lst = S.length (unADB adb) - 1
         (r,s) = S.splitAt (lst `div` n) (unADB adb)
-        (s' :> lastentry) = S.viewr s
+        (s', lastentry) = case S.viewr s of
+            xs S.:> x -> (xs, x)
+            S.EmptyR -> error "shift: unexpected empty sequence"
 
 -- | Insert a new article with top priority (that is, at the front of the list).
 insertArticle :: ArticleDB -> Article -> ArticleDB

@@ -122,14 +122,13 @@ module Yi.Buffer.HighLevel
     ) where
 
 import           Lens.Micro.Platform      (over, use, (%=), (.=), _last)
-import           Control.Monad            (forM, forM_, replicateM_, unless, void, when)
+import           Control.Monad            (forM, replicateM_, unless, void, when)
 import           Control.Monad.RWS.Strict (ask)
 import           Control.Monad.State      (gets)
 import           Data.Char                (isDigit, isHexDigit, isOctDigit, isSpace, isUpper, toLower, toUpper)
 import           Data.List                (intersperse, sort)
 import           Data.List.NonEmpty       (NonEmpty(..))
 import           Data.Maybe               (catMaybes, fromMaybe, listToMaybe)
-import           Data.Monoid              ((<>))
 import qualified Data.Set                 as Set
 import qualified Data.Text                as T (Text, toLower, toUpper, unpack)
 import           Data.Time                (UTCTime)
@@ -981,7 +980,7 @@ deleteRegionWithStyleB reg Block = savingPointB $ do
         deleteN l
         p <- pointB
         moveTo start
-        lineMoveRel i
+        _ <- lineMoveRel i
         return (if l == 0 then Nothing else Just p)
     return $ start :| drop 1 (catMaybes points)
 

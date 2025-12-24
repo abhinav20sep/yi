@@ -42,15 +42,13 @@ module Yi.Eval (
 import Prelude hiding (mapM_)
 
 import Lens.Micro.Platform ( (^.), (.=), (%=) )
-import Control.Monad (when, forever, void)
+import Control.Monad (when)
 import Data.Array ( elems )
 import Data.Binary ( Binary )
 import Data.Default ( Default, def )
 import Data.Foldable ( mapM_ )
 import qualified Data.HashMap.Strict as M
     ( HashMap, insert, lookup, empty, keys )
-import Data.Monoid ((<>))
-import Data.Semigroup ( Semigroup )
 import Data.Typeable ( Typeable )
 #ifdef HINT
 import Control.Concurrent

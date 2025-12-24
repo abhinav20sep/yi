@@ -16,7 +16,6 @@ import Control.Monad.State.Lazy (execStateT)
 import Data.List                (intersperse)
 import Lens.Micro.Platform      ((.=))
 import Data.Maybe               (fromMaybe)
-import Data.Monoid              ((<>))
 
 import Options.Applicative
 

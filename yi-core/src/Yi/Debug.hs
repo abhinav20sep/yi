@@ -20,7 +20,6 @@ import Control.Concurrent
     ( dupChan, getChanContents, forkIO, myThreadId, Chan )
 import Control.Monad.Base ( liftBase, MonadBase )
 import Data.IORef ( readIORef, writeIORef, IORef, newIORef )
-import Data.Monoid ( (<>) )
 import qualified Data.Text as T ( pack, snoc, unpack, Text )
 import GHC.Conc ( labelThread )
 import System.IO

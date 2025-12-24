@@ -15,7 +15,6 @@ import           Control.Monad              (void, when)
 import           Data.Char                  (isDigit)
 import           Data.List                  (isPrefixOf)
 import           Data.Maybe                 (fromJust, fromMaybe)
-import           Data.Monoid                ((<>))
 import qualified Data.Text                  as T (init, last, pack, snoc, unpack)
 import           Yi.Buffer                  hiding (Insert)
 import           Yi.Editor                  (getEditorDyn, withCurrentBuffer)
@@ -43,7 +42,9 @@ textObject operators = VimBindingE f
         let partial = vsTextObjectAccumulator currentState
             opChar = Ev . T.pack $ lastCharForOperator op
             op = fromJust $ stringToOperator operators opname
-            (NormalOperatorPending opname) = vsMode currentState
+            opname = case vsMode currentState of
+                NormalOperatorPending opn -> opn
+                _ -> error "defNormalOperatorPendingMap: not in NormalOperatorPending mode"
 
         -- vim treats cw as ce
         let evs' = if opname == Op "c" && T.last evs == 'w' &&
@@ -65,30 +66,32 @@ textObject operators = VimBindingE f
             PartialOperand -> do
                 accumulateTextObjectEventE (Ev evs)
                 return Continue
-            _ -> do
+            JustTextObject cto@(CountedTextObject n _) -> do
                 count <- getCountE
                 dropTextObjectAccumulatorE
-                token <- case operand of
-                    JustTextObject cto@(CountedTextObject n _) -> do
-                        normalizeCountE (Just n)
-                        operatorApplyToTextObjectE op 1 $
-                            changeTextObjectCount (count * n) cto
-                    JustMove (CountedMove n m) -> do
-                        mcount <- getMaybeCountE
-                        normalizeCountE n
-                        region <- withCurrentBuffer $ regionOfMoveB $ CountedMove (maybeMult mcount n) m
-                        operatorApplyToRegionE op 1 region
-                    JustOperator n style -> do
-                        normalizeCountE (Just n)
-                        normalizedCount <- getCountE
-                        region <- withCurrentBuffer $ regionForOperatorLineB normalizedCount style
-                        curPoint <- withCurrentBuffer pointB
-                        token <- operatorApplyToRegionE op 1 region
-                        when (opname == Op "y") $
-                            withCurrentBuffer $ moveTo curPoint
-                        return token
-
-                    _ -> error "can't happen"
+                normalizeCountE (Just n)
+                token <- operatorApplyToTextObjectE op 1 $
+                    changeTextObjectCount (count * n) cto
+                resetCountE
+                return token
+            JustMove (CountedMove n m) -> do
+                _ <- getCountE
+                dropTextObjectAccumulatorE
+                mcount <- getMaybeCountE
+                normalizeCountE n
+                region <- withCurrentBuffer $ regionOfMoveB $ CountedMove (maybeMult mcount n) m
+                token <- operatorApplyToRegionE op 1 region
+                resetCountE
+                return token
+            JustOperator n style -> do
+                dropTextObjectAccumulatorE
+                normalizeCountE (Just n)
+                normalizedCount <- getCountE
+                region <- withCurrentBuffer $ regionForOperatorLineB normalizedCount style
+                curPoint <- withCurrentBuffer pointB
+                token <- operatorApplyToRegionE op 1 region
+                when (opname == Op "y") $
+                    withCurrentBuffer $ moveTo curPoint
                 resetCountE
                 return token
 
